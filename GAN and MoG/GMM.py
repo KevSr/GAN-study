@@ -3,10 +3,12 @@ from matplotlib import pyplot as plt
 import scipy.interpolate as interpolate
 import scipy.stats as stats
 from PIL import Image
+import gzip
 
 lower, upper = 0, 255
 n=0
 r=0
+train = []
 
 def MMISEL_R():
     m1, s1 = 50, 20
@@ -93,27 +95,30 @@ def inverse_transform_sampling(data, n_bins=40, n_samples=1000):
     cum_values = np.zeros(bin_edges.shape)
     cum_values[1:] = np.cumsum(hist*np.diff(bin_edges))
     inv_cdf = interpolate.interp1d(cum_values, bin_edges)
+    np.random.seed(2)
     r = np.random.uniform(size = n_samples)
     return inv_cdf(r), cum_values
 
-s =  KDEF_B()
-x, cum = inverse_transform_sampling(s, n_samples=7840)
+s =  MMISEL_R()
+x, cum = inverse_transform_sampling(s, n_samples=3920000)
 
-# for k in range(len(x)):
-#     z = np.ndarray(shape=(28,28))
-#     for i in range(28):
-#         for j in range(28):
-#             z[i, j] = x[n]
-#             n += 1
-#     im = Image.fromarray(z)
-#     im = im.convert("L")
-#     im.save("{0}.png".format(r))
-#     r += 1
-#     if n == 7840:
-#         print('done')
-#         break
+for k in range(len(x)):
+    z = np.ndarray(shape=(28,28))
+    for i in range(28):
+        for j in range(28):
+            z[i, j] = x[n]
+            n += 1
+    train.append(z)
+    r += 1
+    if n == 3920000:
+        print('done')
+        break
+train = np.array(train)
+np.save('MMISEL_R_valid.npy', train)
+print(train.shape)
 
-plt.hist(x, bins = 128)
-plt.title("Sample histogram for KDEF_B")
-plt.savefig('KDEF_B_inv.png')
 plt.show()
+# plt.hist(x, bins = 128)
+# plt.title("Sample histogram for KDEF_B")
+# plt.savefig('KDEF_B_inv.png')
+# plt.show()
