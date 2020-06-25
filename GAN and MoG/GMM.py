@@ -1,14 +1,13 @@
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 import scipy.interpolate as interpolate
 import scipy.stats as stats
 from PIL import Image
 import gzip
+import tensorflow as tf
 
 lower, upper = 0, 255
-n=0
 r=0
-train = []
 
 def MMISEL_R():
     m1, s1 = 50, 20
@@ -90,34 +89,76 @@ def KDEF_B():
 
     return s
 
-def inverse_transform_sampling(data, n_bins=40, n_samples=1000):
+def inverse_transform_sampling(data, n_bins=40, n_samples=1000, seed = 1):
     hist, bin_edges = np.histogram(data, bins=n_bins, density=True)
     cum_values = np.zeros(bin_edges.shape)
     cum_values[1:] = np.cumsum(hist*np.diff(bin_edges))
     inv_cdf = interpolate.interp1d(cum_values, bin_edges)
-    np.random.seed(2)
-    r = np.random.uniform(size = n_samples)
+    r = tf.random.uniform(shape = [n_samples], seed = seed)
     return inv_cdf(r), cum_values
 
-s =  MMISEL_R()
-x, cum = inverse_transform_sampling(s, n_samples=3920000)
+def produce_train_set(model):
+    x, cum = inverse_transform_sampling(model, n_samples=3920000)
+    train = np.array(loop(x))
+    print(train.shape)
+    return train
 
-for k in range(len(x)):
-    z = np.ndarray(shape=(28,28))
-    for i in range(28):
-        for j in range(28):
-            z[i, j] = x[n]
-            n += 1
-    train.append(z)
-    r += 1
-    if n == 3920000:
-        print('done')
-        break
-train = np.array(train)
-np.save('MMISEL_R_valid.npy', train)
-print(train.shape)
+def produce_valid_set(model):
+    x, cum = inverse_transform_sampling(model, n_samples=3920000, seed = 2)
+    train = np.array(loop(x))
+    print(train.shape)
+    return train
 
-plt.show()
+def produce_test_set(num, model):
+    test = 0
+    for i in range(num):
+        x, cum = inverse_transform_sampling(model, n_samples=7840, seed = 2+i)
+        train = np.array(loop(x, maxi=7840))
+        if i == 0:
+            test = train
+        else:
+            test = np.append(test, train, axis= 0)
+        print(test.shape)
+    return test
+
+def loop(x, maxi =3920000):
+    train = []
+    n=0
+    for k in range(len(x)):
+        z = np.ndarray(shape=(28,28))
+        for i in range(28):
+            for j in range(28):
+                z[i, j] = x[n]
+                n += 1
+        train.append(z)
+        if n == maxi:
+            print('done')
+            break
+    return train
+
+def all_train_set():
+    np.save('MMISEL_R_train.npy', produce_train_set(MMISEL_R()))
+    np.save('MMISEL_GB_train.npy', produce_train_set(MMISEL_GB()))
+    np.save('KDEF_R_train.npy', produce_train_set(KDEF_R()))
+    np.save('KDEF_G_train.npy', produce_train_set(KDEF_G()))
+    np.save('KDEF_B_train.npy', produce_train_set(KDEF_B()))
+
+def all_valid_set():
+    np.save('MMISEL_R_valid.npy', produce_valid_set(MMISEL_R()))
+    np.save('MMISEL_GB_valid.npy', produce_valid_set(MMISEL_GB()))
+    np.save('KDEF_R_valid.npy', produce_valid_set(KDEF_R()))
+    np.save('KDEF_G_valid.npy', produce_valid_set(KDEF_G()))
+    np.save('KDEF_B_valid.npy', produce_valid_set(KDEF_B()))
+
+def all_test_set():
+    np.save('MMISEL_R_test.npy', produce_test_set(50, MMISEL_R()))
+    np.save('MMISEL_GB_test.npy', produce_test_set(50, MMISEL_GB()))
+    np.save('KDEF_R_test.npy', produce_test_set(50, KDEF_R()))
+    np.save('KDEF_G_test.npy', produce_test_set(50, KDEF_G()))
+    np.save('KDEF_B_test.npy', produce_test_set(50, KDEF_B()))
+
+all_test_set()
+# plt.show()
 # plt.hist(x, bins = 128)
 # plt.title("Sample histogram for KDEF_B")
 # plt.savefig('KDEF_B_inv.png')
