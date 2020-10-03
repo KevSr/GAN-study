@@ -1,0 +1,85 @@
+|    KDEF   |                       Original                                  |                              AlexNet                            |
+|-----------|-----------------------------------------------------------------|-----------------------------------------------------------------|
+|           |        LReLU        |        ReLu         |        CReLU        |        LReLU        |         ReLu        |        CReLU        |
+|-----------|---------------------|---------------------|---------------------|---------------------|---------------------|---------------------|
+|           | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM |
+|-----------|------|-------|------|------|-------|------|------|-------|------|------|-------|------|------|-------|------|------|-------|------|
+| Correct % | 0.873| 0.8924| 0.896| 0.853| 0.8844| 0.900| 0.865| 0.8406| 0.888| 0.837| 0.8047| 0.880| 0.861| 0.8127| 0.876| 0.817| 0.8326| 0.884|
+|-----------------------------------------------------------------------------------------------------------------------------------------------|
+|           |                              VGG 16                             |                             ResNet 50                           | |-----------|-----------------------------------------------------------------|-----------------------------------------------------------------|
+|           |        LReLU        |        ReLu         |        CReLU        |        LReLU        |         ReLu        |        CReLU        |
+|-----------|---------------------|---------------------|---------------------|---------------------|---------------------|---------------------|
+|           | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM |
+|-----------|------|-------|------|------|-------|------|------|-------|------|------|-------|------|------|-------|------|------|-------|------|
+| Correct % | 0.873| 0.8486| 0.908| 0.873| 0.8645| 0.888| 0.880| 0.8645| 0.916| 0.869| 0.8207| 0.873| 0.733| 0.8048| 0.677| 0.693| 0.7928| 0.873|
+|-----------------------------------------------------------------------------|-----------------------------------------------------------------|
+|           |                            GoogleNet                            |
+|-----------|-----------------------------------------------------------------|
+|           |        LReLU        |        ReLu         |        CReLU        |
+|-----------|---------------------|---------------------|---------------------|
+|           | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM | Adam |RMSProp| SGDM |	
+|-----------|------|-------|------|------|-------|------|------|-------|------|
+| Correct % | 0.821| 0.8008| 0.873| 0.721| 0.7171| 0.833| 0.657| 0.7371| 0.837|
+|-----------|-----------------------------------------------------------------|
+
+*Ones with NAN from VAE - VGG Clipped SGDM , original leaky SGDM
+
+*Ones that does not learn from VAE - VGG leaky SGDM, original Clipped SGDM  
+
+** SGDMs does not produce images similar to the input (with VAE)
+Some networks (even with pre-trained generator) does not result with images which contains facial features or similar.
+For some networks, leaky-sgdm ends with Nan (loss) & black images .
+
+With VAE to pretrain Generator
+
+
+GoogleNet ClippedReLU Adam		GoogleNet ClippedReLU RMSProp		GoogleNet ClippedReLU SGDM
+0.6573705179282868			0.7370517928286853			0.8366533864541833
+
+GoogleNet ReLU Adam			GoogleNet ReLU RMSProp			GoogleNet ReLU SGDM
+0.7211155378486056			0.7171314741035857			0.8326693227091634
+
+GoogleNet LeakyReLU Adam		GoogleNet LeakyReLU RMSProp		GoogleNet LeakyReLU SGDM
+0.8207171314741036			0.8007968127490039			0.8725099601593626
+
+
+VGG 16 ReLU Adam			VGG 16 ReLU SGDM			VGG 16 ReLU RMSProp
+0.8725099601593626			0.8884462151394422			0.8645418326693227
+
+VGG 16 LeakyReLU Adam			VGG 16 LeakyReLU RMSProp		VGG 16 LeakyReLU SGDM
+0.8725099601593626			0.848605577689243			0.9083665338645418
+
+VGG 16 ClippedReLU Adam			VGG 16 ClippedReLU RMSProp		VGG 16 ClippedReLU SGDM
+0.8804780876494024			0.8645418326693227			0.9163346613545816
+
+
+Original ReLU Adam			Original ReLU RMSProp			Original ReLU SGDM
+0.852589641434263			0.8844621513944223			0.900398406374502
+
+Original ClippedReLU Adam		Original ClippedReLU RMSProp		Original ClippedReLU SGDM
+0.8645418326693227			0.8406374501992032			0.8884462151394422
+
+Original LeakyReLU Adam			Original LeakyReLU RMSProp		Original LeakyReLU SGDM
+0.8725099601593626			0.8924302788844621			0.896414342629482
+
+
+ResNet 50 ClippedReLU Adam		ResNet 50 ClippedReLU RMSProp		ResNet 50 ClippedReLU SGDM
+0.6932270916334662			0.7928286852589641			0.8725099601593626
+
+ResNet 50 LeakyReLU Adam		ResNet 50 LeakyReLU RMSProp		ResNet 50 LeakyReLU SGDM
+0.8685258964143426			0.8207171314741036			0.8725099601593626
+
+ResNet 50 ReLU Adam			ResNet 50 ReLU RMSProp			ResNet 50 ReLU SGDM
+0.7330677290836654			0.8047808764940239			0.6772908366533864
+
+
+AlexNet ReLU Adam			AlexNet ReLU RMSProp			AlexNet ReLU SGDM
+0.8605577689243028			0.8127490039840638			0.8764940239043825
+
+AlexNet ClippedReLU Adam		AlexNet ClippedReLU RMSProp		AlexNet ClippedReLU SGDM
+0.8167330677290837			0.8326693227091634			0.8844621513944223
+
+AlexNet LeakyReLU Adam			AlexNet LeakyReLU RMSProp		AlexNet LeakyReLU SGDM
+0.8366533864541833			0.8047808764940239			0.8804780876494024
+
+
