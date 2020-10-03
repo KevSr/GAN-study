@@ -21,6 +21,4 @@ Details can be seen in the project's repository.
 <a id="1">[1]</a>  I. J. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. Warde-Farley, S. Ozair, A. Courville, Y. Bengio. Generative Adversarial Nets. *Adv Neural Inf Process Syst*, 2014, 27.  
 [Github link](https://github.com/goodfeli/adversarial)
 
-<a id="2">[2]</a>  L. Maaten, G. Hinton. Visualizing Data using t-SNE. *J. Mach. Learn. Res*, 2008, 9, 2579-2605.
-
-3. A. Radford, L. Metz, S. Chintala. Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks. ICLR 2016.
+<a id="2">[2]</a>  J. T. Springenberg, “Unsupervised and Semi-Supervised Learning with Categorical Generative Adversarial Networks,” *ICLR* 2016.
