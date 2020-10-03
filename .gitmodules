@@ -1,0 +1,6 @@
+[submodule "MoG_and_GAN"]
+	path = MoG_and_GAN
+	url = https://github.com/KevSr/MoG_and_GAN
+[submodule "CatGAN_mod"]
+	path = CatGAN_mod
+	url = https://github.com/KevSr/CatGAN_mod
