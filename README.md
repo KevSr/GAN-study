@@ -14,7 +14,7 @@ Details can be seen in the project's repository.
 
 ## CatGAN_mod
 
-In this project, I tried to modify the CatGAN [[2]](#2).
+In this project, I tried to modify the CatGAN [[2]](#2) with various state-of-the-art generative, and classification networks.
 Details can be seen in the project's repository.
 
 ## References
